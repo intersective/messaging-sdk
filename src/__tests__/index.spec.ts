@@ -34,11 +34,11 @@ const getResponse = {
 };
 
 it('1. send a message to the messaging service', async () => {
-  nock('https://messages.practera.another')
+  nock('https://messages.practera.com')
     .post('/api')
     .reply(200, getResponse)
   
-  const messages = new Messages(privateKey, 'NOTIFICATION', 'https://messages.practera.another/api');
+  const messages = new Messages(privateKey, 'NOTIFICATION', 'https://messages.practera.com/api');
 
   const response = await messages.send({wow: "blah"});
   expect(response).toMatchSnapshot();
