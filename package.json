@@ -1,0 +1,48 @@
+{
+  "name": "@practera/messaging-sdk",
+  "version": "0.0.1",
+  "description": "Facilitates the communication with the Practera messaging API",
+  "license": "MIT",
+  "repository": "intersective/messaging-sdk",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "keywords": [
+    "practera",
+    "intersective",
+    "api"
+  ],
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "pretest": "npm run lint",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "lint-fix": "tslint --fix -p tsconfig.json -c tslint.json",
+    "test": "npm run build && npx jest --coverage",
+    "test-update": "npm run build && npx jest --updateSnapshot",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@types/flat": "^5.0.1",
+    "@types/jest": "^26.0.20",
+    "@types/jsonwebtoken": "^8.5.0",
+    "jest": "^26.6.3",
+    "nock": "^13.0.7",
+    "pre-commit": "^1.2.2",
+    "ts-jest": "^26.5.1",
+    "tslint": "^6.1.3",
+    "tslint-config-airbnb": "^5.11.2",
+    "typescript": "^4.1.5"
+  },
+  "precommit.silent": true,
+  "pre-commit": [
+    "test"
+  ]
+}
