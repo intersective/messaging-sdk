@@ -38,8 +38,19 @@ it('1. send a message to the messaging service', async () => {
     .post('/api')
     .reply(200, getResponse)
   
-  const messages = new Messages(privateKey, 'NOTIFICATION', 'https://messages.practera.com/api');
+  const messages = Messages.getInstance(privateKey, 'NOTIFICATION', 'https://messages.practera.com/api');
 
   const response = await messages.send({wow: "blah"});
+  expect(response).toMatchSnapshot();
+});
+
+it('2. send a message to the messaging service', async () => {
+  nock('https://messages.practera.com/api')
+    .post('/api')
+    .reply(200, getResponse)
+  
+  const messages = Messages.getInstance(privateKey, 'NOTIFICATION');
+
+  const response = await messages.send({message: "Hello World !!"});
   expect(response).toMatchSnapshot();
 });
