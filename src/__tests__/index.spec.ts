@@ -41,6 +41,8 @@ it('1. using the service before creating the instance', async () => {
 
 it('2. send a message to the messaging service', async () => {
   const messages = Messages.create(privateKey, 'NOTIFICATION', 'https://messages.practera/lol');
+  const messages2 = Messages.create(privateKey, 'NOTIFICATION', 'https://messages.practera/lala');
+  expect(messages).toEqual(messages2);
   nock('https://messages.practera')
     .post('/lol')
     .reply(200, getResponse)

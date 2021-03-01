@@ -16,7 +16,10 @@ export class Messages {
     this.url = url || 'https://messages.practera.com/api';
   }
   public static create(privateKey: string, service: string, url?: string) {
-    return this.privateInstance || (this.privateInstance = new this(privateKey, service, url));
+    if (!this.privateInstance) {
+      this.privateInstance = new this(privateKey, service, url);
+    }
+    return this.privateInstance;
   }
 
   public static get instance(): Messages {
