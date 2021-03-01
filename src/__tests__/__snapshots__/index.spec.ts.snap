@@ -1,6 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`1. send a message to the messaging service 1`] = `
+exports[`2. send a message to the messaging service 1`] = `
+Object {
+  "reference": "uuuuu-uuuuu-iiiii-ddddd",
+}
+`;
+
+exports[`3. send a message to the messaging service 1`] = `
+Object {
+  "reference": "uuuuu-uuuuu-iiiii-ddddd",
+}
+`;
+
+exports[`3. send a message to the messaging service 2`] = `
 Object {
   "reference": "uuuuu-uuuuu-iiiii-ddddd",
 }

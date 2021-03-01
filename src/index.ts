@@ -2,7 +2,7 @@ import Axios from 'axios';
 import JWT from 'jsonwebtoken';
 
 export class Messages {
-  private static instance: Messages;
+  private static privateInstance: Messages | null;
 
   protected service: string;
   protected privateKey: string;
@@ -13,11 +13,21 @@ export class Messages {
     this.data = {};
     this.service = service;
     this.privateKey = privateKey;
-    this.url = url ? url : 'https://messages.practera.com/api';
+    this.url = url || 'https://messages.practera.com/api';
   }
-  public static getInstance(privateKey: string, service: string, url?: string) {
-    // Do you need arguments? Make it a regular static method instead.
-    return this.instance || (this.instance = new this(privateKey, service, url));
+  public static create(privateKey: string, service: string, url?: string) {
+    return this.privateInstance || (this.privateInstance = new this(privateKey, service, url));
+  }
+
+  public static get instance(): Messages {
+    if (this.privateInstance == null) {
+      throw new Error('You have to create an instance before using it.');
+    }
+    return this.privateInstance;
+  }
+
+  public static delete() {
+    this.privateInstance = null;
   }
 
   send(data?: {}) : Promise<any> {
