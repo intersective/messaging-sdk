@@ -33,13 +33,33 @@ const getResponse = {
   reference: 'uuuuu-uuuuu-iiiii-ddddd',
 };
 
-it('1. send a message to the messaging service', async () => {
-  nock('https://messages.practera.com')
-    .post('/api')
-    .reply(200, getResponse)
-  
-  const messages = new Messages(privateKey, 'NOTIFICATION', 'https://messages.practera.com/api');
+it('1. using the service before creating the instance', async () => {
+  expect(() => {
+    Messages.instance.send({wow: "blah"});
+  }).toThrow('You have to create an instance before using it.');
+});
 
+it('2. send a message to the messaging service', async () => {
+  const messages = Messages.create(privateKey, 'NOTIFICATION', 'https://messages.practera/lol');
+  const messages2 = Messages.create(privateKey, 'NOTIFICATION', 'https://messages.practera/lalazzzz');
+  expect(messages).toEqual(messages2);
+  nock('https://messages.practera')
+    .post('/lol')
+    .reply(200, getResponse)
   const response = await messages.send({wow: "blah"});
   expect(response).toMatchSnapshot();
+  Messages.delete();
 });
+
+it('3. send a message to the messaging service', async () => {
+  nock('https://messages.practera.com')
+    .persist()
+    .post('/api')
+    .reply(200, getResponse)
+  const messages = Messages.create(privateKey, 'NOTIFICATION');
+  const response = await messages.send({message: 'Hello World !!'});
+  const response2 = await Messages.instance.send({message: 'Hello Practera !!'});
+  expect(response).toMatchSnapshot();
+  expect(response2).toMatchSnapshot();
+});
+

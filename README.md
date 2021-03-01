@@ -34,12 +34,15 @@ import { Messages } from "@practera/messaging-sdk";
 Sending a json to the messaging service
 
 ```js
-const client = new Messages(
+const client = new Messages.create(
   privateKey, // the private key used to sign the request
   service, // this will identify what public key to use to validate the token, the variable called ${service}_JWT will be used. The variable should contain a key called public and the public key as the value.
   url, // the URL of the messaging API, leave empty for production
 );
 
-// to perform the api call for the data, note this does not return the data but a reference to self. This allows to chain requests if you want.
-client.send({});
+// to perform the api call for the data
+client.send({message: 'Hello world !!!'});
+
+// a singleton has been created so after creating the initial client you can also call it using
+Messages.instance.send({wow: "blah"});
 ```
