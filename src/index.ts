@@ -1,6 +1,5 @@
 import Axios from 'axios';
 import JWT from 'jsonwebtoken';
-import logger from '@dazn/lambda-powertools-logger';
 
 export class Messages {
   private static privateInstance: Messages | null;
@@ -36,21 +35,16 @@ export class Messages {
   }
 
   async send(data?: {}): Promise<any> {
-    try {
-      const response = await Axios.post(this.url, data, {
-        timeout: 20000,
-        headers: {
-          service: this.service,
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-          apikey: JWT.sign({ role: 'system', uuid: this.service }, this.privateKey, { algorithm: 'RS256' }),
-        },
-      });
+    const response = await Axios.post(this.url, data, {
+      timeout: 20000,
+      headers: {
+        service: this.service,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        apikey: JWT.sign({ role: 'system', uuid: this.service }, this.privateKey, { algorithm: 'RS256' }),
+      },
+    });
 
-      return response.data;
-    } catch (err) {
-      logger.error('MessageSDK-send()::', { err });
-      throw err;
-    }
+    return response.data;
   }
 }

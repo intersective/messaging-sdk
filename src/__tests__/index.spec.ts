@@ -1,5 +1,5 @@
 import { Messages } from '../index';
-const nock = require('nock');
+import nock from 'nock';
 
 const privateKey = '-----BEGIN RSA PRIVATE KEY-----\n' +
 'MIIEpQIBAAKCAQEAwCtQ1cAYp7tNiA0SojsVgiO9DwsLhs5ZOEkKa72RFPBUS7fD\n' +
