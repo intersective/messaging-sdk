@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import JWT from 'jsonwebtoken';
+import logger from '@dazn/lambda-powertools-logger';
 
 export class Messages {
   private static privateInstance: Messages | null;
@@ -12,9 +13,10 @@ export class Messages {
   private constructor(privateKey: string, service: string, url?: string) {
     this.data = {};
     this.service = service;
-    this.privateKey = privateKey;
+    this.privateKey = privateKey.includes('\\n') ? JSON.parse(privateKey) : privateKey;
     this.url = url || 'https://messages.practera.com/api';
   }
+
   public static create(privateKey: string, service: string, url?: string) {
     if (!this.privateInstance) {
       this.privateInstance = new this(privateKey, service, url);
@@ -33,9 +35,9 @@ export class Messages {
     this.privateInstance = null;
   }
 
-  send(data?: {}) : Promise<any> {
-    return new Promise(resolve => {
-      Axios.post(this.url, data, {
+  async send(data?: {}): Promise<any> {
+    try {
+      const response = await Axios.post(this.url, data, {
         timeout: 20000,
         headers: {
           service: this.service,
@@ -43,9 +45,12 @@ export class Messages {
           Accept: 'application/json',
           apikey: JWT.sign({ role: 'system', uuid: this.service }, this.privateKey, { algorithm: 'RS256' }),
         },
-      }).then(response => {
-        resolve(response.data);
       });
-    });
+
+      return response.data;
+    } catch (err) {
+      logger.error('MessageSDK-send()::', { err });
+      throw err;
+    }
   }
 }
