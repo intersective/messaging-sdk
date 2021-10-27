@@ -1,6 +1,6 @@
 {
   "name": "@practera/messaging-sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Facilitates the communication with the Practera messaging API",
   "license": "MIT",
   "repository": "intersective/messaging-sdk",
